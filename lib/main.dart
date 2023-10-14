@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:to_do_list/bucket_service.dart';
+import 'package:to_do_list/to_do_list_service.dart';
 
 void main() {
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => BucketService())],
+      providers: [ChangeNotifierProvider(create: (context) => ToDoList())],
       child: const MyApp(),
     ),
   );
@@ -38,9 +38,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BucketService>(builder: (context, bucketService, child) {
-      // BucketService의 bucketList 가져오기
-      List<Bucket> bucketList = bucketService.bucketList;
+    return Consumer<ToDoList>(builder: (context, toDoList, child) {
+      // ToDoList의 toDoList 가져오기
+      List<Bucket> bucketList = toDoList.toDoList;
       return Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.black),
@@ -73,7 +73,7 @@ class HomePage extends StatelessWidget {
                         onPressed: () {
                           //체크 버튼 클릭 시
                           bucket.isDone = !bucket.isDone;
-                          bucketService.updateBucket(bucket, index);
+                          toDoList.updateToDoList(bucket, index);
                           print('$bucket : 체크하기');
                         },
                       ),
@@ -99,7 +99,7 @@ class HomePage extends StatelessWidget {
                             ),
                             onPressed: () {
                               // 삭제 버튼 클릭시
-                              bucketService.deleteBucket(index);
+                              toDoList.deleteToDoList(index);
                             },
                           )
                         ],
@@ -179,8 +179,8 @@ class _CreatePageState extends State<CreatePage> {
                     error = null; // 내용이 있는 경우 에러 메세지 숨기기
                   });
                   //BucketService 가져오기
-                  BucketService bucketService = context.read<BucketService>();
-                  bucketService.createBucket(job);
+                  ToDoList toDoList = context.read<ToDoList>();
+                  toDoList.createToDoList(job);
 
                   Navigator.pop(context, job); // job 변수를 반환하며 화면을 종료합니다.
                 }
@@ -226,8 +226,8 @@ class _CreatePageState extends State<CreatePage> {
                       error = null; // 내용이 있는 경우 에러 메세지 숨기기
                     });
                     //BucketService 가져오기
-                    BucketService bucketService = context.read<BucketService>();
-                    bucketService.createBucket(job);
+                    ToDoList toDoList = context.read<ToDoList>();
+                    toDoList.createToDoList(job);
 
                     Navigator.pop(context, job); // job 변수를 반환하며 화면을 종료합니다.
                   }
